@@ -1,18 +1,126 @@
 import { echo } from '/light.js'
 let dom_count = 0
 
+class ElementCollection extends Array { 
+  onready(cb) {
+    const isReady = this.some(e => {
+      return e.readyState != null && e.readyState !== 'loading'
+    })
+    if (isReady) {
+      cb()
+    }
+    else {
+      this.on('DOMContentLoaded', cb)
+    }
+    return this
+  }
+
+  on(event, cborSelector, cb) {
+    if (typeof cborSelector === 'function') {
+      this.forEach(e => {
+        e.addEventListener(event, cborSelector)
+      })
+    } else {
+      this.forEach(elem => {
+        elem.addEventListener(event, (e) => {
+          if (e.target.matches(cborSelector)) {
+            cb(e)
+          }
+        })
+    })
+    }
+    return this
+  }
+
+  next() {
+    return this.map(e => e.nextElementSibling).filter(e => e !== null)
+  }
+  prev() {
+    return this.map(e => e.previousElementSibling).filter(e => e !== null)
+  }
+
+  removeClass(className) {
+    this.forEach(e => {
+      e.classList.remove(className)
+    })
+    return this
+  }
+  addClass(className) {
+    this.forEach(e => {
+      e.classList.add(className)
+    })
+    return this
+  }
+
+  css(property, value) {
+    const camelProperty = property.replace(/-([a-z])/g, (g) => g.replace('-', '').toUpperCase())
+    this.forEach(e => e.style[camelProperty] = value)
+    return this
+  }
+
+  append(element) {
+    this.forEach(e => {
+        if (element instanceof ElementCollection) {
+            element.forEach(el => e.appendChild(el));
+        } else if (typeof element === 'string') {
+            const temp = document.createElement('template');
+            temp.innerHTML = element.trim();
+            temp.content.childNodes.forEach(node => {
+                e.appendChild(node.cloneNode(true));
+            });
+        } else if (element instanceof Node) {
+            e.appendChild(element);
+        }
+    });
+    return this;
+  }
+}
+
+class ajaxPromise {
+  constructor(promise) {
+    this.promise = promise
+  }
+
+  finish(cb) {
+    this.promise = this.promise.then(data => {
+      cb(data)
+      return data
+    }
+    )
+    return this
+  }
+
+  fail(cb) {
+    this.promise = this.promise.catch(cb)
+    return this
+  }
+
+  always(cb) {
+    this.promise = this.promise.finally(cb)
+    return this
+  }
+}
+
 export class dom {
   constructor() {
-    this.element 
+    
   }
   query(element) {
     dom_count += 1
-    return document.querySelector(element)
+    if (typeof element === 'string') {
+      return new ElementCollection(document.querySelector(element))
+    } else {
+      return new ElementCollection(element)
+    }
   }
-  
+
   queryAll(element) {
     dom_count += 1
-    return document.querySelectorAll(element)
+    if (typeof element === 'string') {
+      return new ElementCollection(...document.querySelectorAll(element))
+    } else {
+      return new ElementCollection(...element)
+    }
   }
   
   create(element, value) {
@@ -25,19 +133,63 @@ export class dom {
     return el
   }
   remove(element) {
-    let el = document.querySelector(`[name="${element}""]`)
+    let el = document.querySelector(`[name="${element}"]`)
     if (el) {
       el.remove()
       dom_count -= 1
     }
     return el
   }
-  click(element, callback) {
-    let el = document.getElementById(element)
-    try {
-      el.addEventListener("click", () => { callback })
-    } catch(error) {
-      echo.error("Light DOM: error in click()")
-    }
+
+  static get({url, data = {}, success = () => {}, dataType = 'application/json'}) {
+    const queryString = Object.entries(data)
+        .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+        .join('&')
+    
+    return new ajaxPromise(
+        fetch(`${url}?${queryString}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': dataType
+            },
+        })
+        .then(res => {
+            if (res.ok) return res.json()
+            throw new Error(`HTTP error! status: ${res.status}`)
+        })
+        .then(data => {
+            success(data)
+            return data
+        })
+        .catch(error => {
+            echo.error("Light DOM: AJAX error:", error)
+            throw error
+        })
+    )
+  }
+
+  static post({url, data = {}, success = () => {}, dataType = 'application/json'}) {
+    return new ajaxPromise(
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': dataType
+            },
+            body: JSON.stringify(data)
+        })
+        .then(res => {
+            if (res.ok) return res.json()
+            throw new Error(`HTTP error! status: ${res.status}`)
+        })
+        .then(data => {
+            success(data)
+            return data
+        })
+        .catch(error => {
+            echo.error("Light DOM: AJAX error:", error)
+            throw error
+        })
+    )
   }
 }
+
