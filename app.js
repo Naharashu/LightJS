@@ -1,8 +1,8 @@
 import { echo } from './light.js'
 import { fastDB } from './moduls_light/fastDB.js'
-import { dom } from './moduls_light/Dom.js'
+import { Dom } from './moduls_light/Dom.js'
 
-const dm = new dom
+const dm = new Dom
 const db = new fastDB
 let x = {
   name: "John",
@@ -19,7 +19,7 @@ z = db.get("test", 0)
 echo(z)
 
 echo(dm.query('div'))
-let rtrt = dm.create("p", "hello")
-document.body.appendChild(rtrt)
-dm.remove("pe")
+dm.query('div').addClass('test')
+dm.query('div').css('background-color', 'red')
+dm.query('div').append('<p>test</p>')
 
