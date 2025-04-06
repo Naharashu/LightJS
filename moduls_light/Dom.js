@@ -32,6 +32,17 @@ class ElementCollection extends Array {
     return this
   }
 
+  click(Selector, cb) {
+      this.forEach(elem => {
+        elem.addEventListener('click', (e) => {
+          if (e.target.matches(Selector)) {
+            cb(e)
+          }
+        })
+      })
+    return this
+  }
+
   next() {
     return this.map(e => e.nextElementSibling).filter(e => e !== null)
   }
@@ -52,9 +63,36 @@ class ElementCollection extends Array {
     return this
   }
 
+  hasClass(className) {
+    return this.some(e => {
+      return e.classList.contains(className)
+    })
+  }
+
+  toggleClass(className) {
+    this.forEach(e => {
+      e.classList.toggle(className)
+    })
+    return this
+  }
+
   css(property, value) {
     const camelProperty = property.replace(/-([a-z])/g, (g) => g.replace('-', '').toUpperCase())
     this.forEach(e => e.style[camelProperty] = value)
+    return this
+  }
+
+  hide(element) {
+    this.forEach(e => {
+      e.style.display = 'none'
+    })
+    return this
+  }
+
+  show(element) {
+    this.forEach(e => {
+      e.style.display = 'block'
+    })
     return this
   }
 
@@ -73,6 +111,13 @@ class ElementCollection extends Array {
         }
     });
     return this;
+  }
+
+  removeChild(element) {
+    this.forEach(e => {
+      e.removeChild(element)
+    })
+    return this
   }
 }
 
@@ -101,7 +146,7 @@ class ajaxPromise {
   }
 }
 
-export class dom {
+export class Dom {
   constructor() {
     
   }
