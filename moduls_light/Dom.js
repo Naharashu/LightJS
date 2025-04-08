@@ -14,6 +14,29 @@ class ElementCollection extends Array {
     }
     return this
   }
+  
+  html(result) {
+    try {
+      this.forEach(e => {
+        e.innerHTML = result
+      })
+    } catch {
+      echo.error("Error in DOM.html()")
+    }
+    return this
+  }
+  
+  text(result) {
+    try {
+      this.forEach(e => {
+        e.textContent = result
+      })
+    } catch {
+      echo.error("Error in DOM.text()")
+    }
+    return this
+  }
+  
 
   on(event, cborSelector, cb) {
     if (typeof cborSelector === 'function') {
@@ -35,6 +58,17 @@ class ElementCollection extends Array {
   click(Selector, cb) {
       this.forEach(elem => {
         elem.addEventListener('click', (e) => {
+          if (e.target.matches(Selector)) {
+            cb(e)
+          }
+        })
+      })
+    return this
+  }
+  
+  hover(Selector, cb) {
+      this.forEach(elem => {
+        elem.addEventListener('hover', (e) => {
           if (e.target.matches(Selector)) {
             cb(e)
           }
@@ -148,7 +182,7 @@ class ajaxPromise {
 
 export class Dom {
   constructor() {
-    
+
   }
   query(element) {
     dom_count += 1
@@ -167,7 +201,7 @@ export class Dom {
       return new ElementCollection(...element)
     }
   }
-  
+
   create(element, value) {
     if (dom_count > 1024) {
       echo.warn("So many DOM methods can slow site")
@@ -190,7 +224,7 @@ export class Dom {
     const queryString = Object.entries(data)
         .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
         .join('&')
-    
+
     return new ajaxPromise(
         fetch(`${url}?${queryString}`, {
             method: 'GET',
@@ -237,4 +271,3 @@ export class Dom {
     )
   }
 }
-
