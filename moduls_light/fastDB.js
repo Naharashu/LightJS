@@ -18,7 +18,7 @@ export class fastDB {
       this.clusters[name] = {}
     }
   }
-  delClaster(name) {
+  async delClaster(name) {
     delete this.clusters[name]
   }
   
@@ -29,11 +29,11 @@ export class fastDB {
     this.clusters[cluster] = {...this.clusters[cluster], ...newData}
   }
   
-  move(cluster1 = "main", cluser2 = "main", key) {
+  async move(cluster1 = "main", cluser2 = "main", key) {
     if (this.clusters[cluster1]?.[key] != null) {
       const value = this.clusters[cluster1][key]
-      this.set(cluster2, key, value) 
-      this.delete(cluster1, key)
+      await this.set(cluster2, key, value) 
+      await this.delete(cluster1, key)
     } else {
       echo('Key "${key}" not found in cluster "${cluster1}"')
     }
@@ -50,7 +50,7 @@ export class fastDB {
     return this.clusters?.[cluster]?.[key] || null
   }
   
-  delete(cluster="main", key) {
+  async delete(cluster="main", key) {
     delete this.clusters[cluster][key]
   }
   
@@ -86,11 +86,13 @@ export class fastDB {
     return this.temp[key]
   }
   
-  clearTemp() {
+  async clearTemp() {
+    await sleep(random(100, 1000))
     this.temp = {}
   }
   
-  clearDB() {
+  async clearDB() {
+    await this.clearTemp()
     this.clusters = { main: {}}
   }
   
