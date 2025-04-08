@@ -1,3 +1,5 @@
+
+
 // Useful constant
 
 export const pi = 3.14159265
@@ -7,12 +9,11 @@ export const letters = {
   uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
   lowercase: 'abcdefghijklmnopqrstuvwxyz',
   all: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-};
+}
 
 
 
 // addon
-
 
 
 export function echo(value) {
@@ -25,15 +26,15 @@ echo.warn = function echo_warning(value) {
 }
 
 export function Eval(code) {
-    let safeCode = code.replace(/[^a-zA-Z0-9+\-*/%.()\s^]/g, '');
+    let safeCode = code.replace(/[^a-zA-Z0-9+\-*/%.()\s^]/g, '')
     
-    const sCode = safeCode.replace(/\^/g, '**');
+    const sCode = safeCode.replace(/\^/g, '**')
 
     try {
         return new Function('return ' + sCode)(); 
     } catch (error) {
-        console.error('Error executing code:', error);
-        return null;
+        echo.error('Error executing code:', error)
+        return null
     }
 }
 
@@ -46,7 +47,7 @@ export function Eval(code) {
 
 export function sleep(t) {
   if (typeof t !== "number" || isNaN(t)) {
-    console.log("Error in sleep function");
+    echo.error("Error in sleep function");
     return;
   }
 
@@ -55,6 +56,10 @@ export function sleep(t) {
 
 export function clone(original) {
   return {...original}
+}
+
+export function deepclone(original) {
+  return JSON.parse(JSON.stringify(original))
 }
 
 export function compare(a, b) {
