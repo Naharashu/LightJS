@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 
-class backfast {
+export class backfast {
     constructor() {
         this.server = null;
     }
@@ -58,9 +58,3 @@ class backfast {
     }
 }
 
-backfast = new backfast
-backfast.start(3000)
-setTimeout(() => {
-    backfast.end()
-}
-, 10000)
