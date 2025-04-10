@@ -1,12 +1,9 @@
 import { echo } from './light.js'
-import * as light from './light.js'
-import { Dom } from './moduls_light/Dom.js'
 import { fastDB } from './moduls_light/fastDB.js'
-import { FileSysAccAPI } from './moduls_light/file.js'
+import { Dom } from './moduls_light/Dom.js'
 
 const dm = new Dom
 const db = new fastDB
-const file = new FileSysAccAPI
 let x = {
   name: "John",
   age: 14
@@ -24,9 +21,5 @@ echo(z)
 echo(dm.query('div'))
 dm.query('div').addClass('test')
 dm.query('div').css('background-color', 'red')
-dm.query('div').append('<p>tet</p>').css('background-color', 'black')
-file.openFile()
+dm.query('div').append('<p>test</p>')
 
-
-let w = light.deepclone(x)
-echo(w)

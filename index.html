@@ -3,12 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LightScript Test</title>
+    <title>Light.JS Test</title>
 </head>
 <body>
-    <div class="app"></div>
-    <div id="#add"></div>
-    <div id="pe"></div>
+    <a href="/">Home</a>
+    <a href="/about">Test</a>
+
+    <script type="module">
+        import { Dom } from '/moduls_light/Dom.js'
+
+        const dom = new Dom()
+
+        dom.query('body').append(
+            dom.create('h1', 'Hello, World! Its a backfast + Dom!')
+        )
+    </script>
 </body>
-<script type="module" src="app.js"></script>
+
 </html>
