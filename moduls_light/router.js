@@ -7,6 +7,9 @@ const routers = {
     '/home': 'home.html',
     '/about': 'about.html',
     '/download': 'download.html',
+    '/main': 'main.html',
+    '/general': 'general.html',
+    '/images': 'images.html',
     '/404': '404.html'
 }
 
