@@ -18,6 +18,17 @@ class ElementCollection extends Array {
   html(result) {
     try {
       this.forEach(e => {
+        e.innerHTML += result
+      })
+    } catch {
+      echo.error("Error in DOM.html()")
+    }
+    return this
+  }
+
+  html2(result) {
+    try {
+      this.forEach(e => {
         e.innerHTML = result
       })
     } catch {
