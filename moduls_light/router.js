@@ -1,6 +1,4 @@
-import { echo } from '/light.js'
 import { Dom } from '/moduls_light/Dom.js'
-
 const dom = new Dom
 
 

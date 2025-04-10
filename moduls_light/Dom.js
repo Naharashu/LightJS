@@ -1,4 +1,4 @@
-import { echo } from '/light.js'
+import { echo } from '../light.js'
 let dom_count = 0
 
 class ElementCollection extends Array { 
