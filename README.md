@@ -11,6 +11,9 @@ fast and simple js library for dom, key-value dbs and more
    - router 
    - many useful functions
 
+#### Required:
+   - Node.js 18 and higher 
+
 #### Plannings:
    - make min version
    - make more good DOM management 
@@ -18,6 +21,5 @@ fast and simple js library for dom, key-value dbs and more
    - upgrade backfast module
    - upgraded other modules 
    - other many things 
-
 
 
