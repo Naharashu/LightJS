@@ -1,6 +1,7 @@
 # LightJS
 ![LICENSE](https://img.shields.io/badge/MPL--2.0-blue?style=for-the-badge) 
 [![Forks](https://img.shields.io/github/forks/Naharashu/LightJS.svg?style=social&label=Fork)](https://github.com/Naharashu/LightJS/fork)
+[![Version](https://img.shields.io/github/v/tag/Naharashu/LightJS?label=version)](https://github.com/Naharashu/LightJS/releases)
 
 fast and simple js library for dom, key-value dbs and more
 
