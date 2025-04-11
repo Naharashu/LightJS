@@ -1,4 +1,4 @@
-import { echo } from '../light.js'
+import { echo } from './light.js'
 let dom_count = 0
 
 class ElementCollection extends Array { 
@@ -18,17 +18,6 @@ class ElementCollection extends Array {
   html(result) {
     try {
       this.forEach(e => {
-        e.innerHTML += result
-      })
-    } catch {
-      echo.error("Error in DOM.html()")
-    }
-    return this
-  }
-
-  html2(result) {
-    try {
-      this.forEach(e => {
         e.innerHTML = result
       })
     } catch {
@@ -46,6 +35,22 @@ class ElementCollection extends Array {
       echo.error("Error in DOM.text()")
     }
     return this
+  }
+
+  value() {
+    const firstElement = this[0];
+    return firstElement && 'value' in firstElement ? firstElement.value : '';
+  }
+
+  setValue(value) {
+    if (arguments.length > 0) {
+      this.forEach(e => {
+        e.value = value
+      })
+      return this
+    } else {
+      echo.errror("Error in DOM.setValue()")
+    }
   }
   
 
