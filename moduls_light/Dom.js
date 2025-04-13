@@ -71,13 +71,9 @@ class ElementCollection extends Array {
     return this
   }
 
-  click(Selector, cb) {
+  click(cb) {
       this.forEach(elem => {
-        elem.addEventListener('click', (e) => {
-          if (e.target.matches(Selector)) {
-            cb(e)
-          }
-        })
+        elem.addEventListener('click', cb)
       })
     return this
   }
