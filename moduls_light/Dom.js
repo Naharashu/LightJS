@@ -142,6 +142,22 @@ class ElementCollection extends Array {
     return this
   }
 
+  dark(element) {
+    this.forEach(e => {
+      e.style.backgroundColor = 'black'
+      e.style.color = 'white'
+    })
+    return this
+  }
+
+  white(element) {
+    this.forEach(e => {
+      e.style.backgroundColor = 'white'
+      e.style.color = 'black'
+    })
+    return this
+  }
+
   append(element) {
     this.forEach(e => {
         if (element instanceof ElementCollection) {
@@ -159,12 +175,20 @@ class ElementCollection extends Array {
     return this;
   }
 
-  removeChild(element) {
+  remove(element) {
     this.forEach(e => {
       e.removeChild(element)
     })
     return this
   }
+
+  replace(newEL, old) {
+    this.forEach(e => {
+      e.replaceChild(newEL, old)
+    })
+    return this
+  }
+
 }
 
 class ajaxPromise {
@@ -223,7 +247,7 @@ export class Dom {
     dom_count += 1
     return el
   }
-  remove(element) {
+  delete(element) {
     let el = document.querySelector(`[name="${element}"]`)
     if (el) {
       el.remove()
